@@ -12,6 +12,7 @@ public class ProductDisplayDTO {
     private LocalDateTime expiryDate;
     private String category;
     private String vendor;
+    private Double price;
     private LocalDateTime dateAdded;
     private List<BasicDishDTO> dishes;
 
@@ -20,7 +21,7 @@ public class ProductDisplayDTO {
 
     public ProductDisplayDTO(Long productId, String name, Double quantity,
                              String unitOfMeasure, LocalDateTime expiryDate,
-                             String category, String vendor, LocalDateTime dateAdded) {
+                             String category, String vendor, Double price, LocalDateTime dateAdded) {
         this.productId = productId;
         this.name = name;
         this.quantity = quantity;
@@ -28,6 +29,7 @@ public class ProductDisplayDTO {
         this.expiryDate = expiryDate;
         this.category = category;
         this.vendor = vendor;
+        this.price = price;
         this.dateAdded = dateAdded;
     }
 
@@ -93,5 +95,13 @@ public class ProductDisplayDTO {
 
     public void setDateAdded(LocalDateTime dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

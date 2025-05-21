@@ -21,6 +21,7 @@ public class ProductMapper {
                 dto.getExpiryDate(),
                 category,
                 vendor,
+                dto.getPrice(),
                 dto.getDateAdded()
         );
     }
@@ -36,6 +37,7 @@ public class ProductMapper {
                 entity.getExpiryDate(),
                 entity.getCategory().getName(),
                 entity.getVendor().getName(),
+                entity.getPrice(),
                 entity.getDateAdded()
         );
     }

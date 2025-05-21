@@ -27,6 +27,8 @@ public class Product {
     @ManyToOne
     private Vendor vendor;
 
+    private Double price;
+
     private LocalDateTime dateAdded;
 
     @ManyToMany(mappedBy = "products")
@@ -39,26 +41,28 @@ public class Product {
 
     public Product(String name, Double quantity, Unit unitOfMeasure,
                    LocalDateTime expiryDate, Category category,
-                   Vendor vendor, LocalDateTime dateAdded, List<Dish> dishes) {
+                   Vendor vendor, Double price, LocalDateTime dateAdded, List<Dish> dishes) {
         this.name = name;
         this.quantity = quantity;
         this.unitOfMeasure = unitOfMeasure;
         this.expiryDate = expiryDate;
         this.category = category;
         this.vendor = vendor;
+        this.price = price;
         this.dateAdded = dateAdded;
         this.dishes = dishes;
     }
 
     public Product(String name, Double quantity, Unit unitOfMeasure,
                    LocalDateTime expiryDate, Category category,
-                   Vendor vendor, LocalDateTime dateAdded) {
+                   Vendor vendor, Double price, LocalDateTime dateAdded) {
         this.name = name;
         this.quantity = quantity;
         this.unitOfMeasure = unitOfMeasure;
         this.expiryDate = expiryDate;
         this.category = category;
         this.vendor = vendor;
+        this.price = price;
         this.dateAdded = dateAdded;
     }
 
@@ -132,5 +136,13 @@ public class Product {
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

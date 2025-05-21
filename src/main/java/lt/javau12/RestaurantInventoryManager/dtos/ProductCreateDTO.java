@@ -12,6 +12,7 @@ public class ProductCreateDTO {
     private LocalDateTime expiryDate;
     private Long categoryId;
     private Long vendorId;
+    private Double price;
     private LocalDateTime dateAdded;
     private List<Long> listOfDishId;
 
@@ -24,7 +25,7 @@ public class ProductCreateDTO {
     //All args constructor
     public ProductCreateDTO(Long productId, String name, Double quantity,
                             Long unitOfMeasureId, LocalDateTime expiryDate,
-                            Long categoryId, Long vendorId, LocalDateTime dateAdded,
+                            Long categoryId, Long vendorId,Double price, LocalDateTime dateAdded,
                             List<Long> listOfDishId) {
         this.productId = productId;
         this.name = name;
@@ -33,13 +34,14 @@ public class ProductCreateDTO {
         this.expiryDate = expiryDate;
         this.categoryId = categoryId;
         this.vendorId = vendorId;
+        this.price = price;
         this.dateAdded = dateAdded;
         this.listOfDishId = listOfDishId;
     }
 
     //No Id constructor
     public ProductCreateDTO(String name, Double quantity, Long unitOfMeasureId,
-                            LocalDateTime expiryDate, Long categoryId, Long vendorId,
+                            LocalDateTime expiryDate, Long categoryId, Long vendorId,Double price,
                             LocalDateTime dateAdded, List<Long> listOfDishId) {
         this.name = name;
         this.quantity = quantity;
@@ -47,6 +49,7 @@ public class ProductCreateDTO {
         this.expiryDate = expiryDate;
         this.categoryId = categoryId;
         this.vendorId = vendorId;
+        this.price = price;
         this.dateAdded = dateAdded;
         this.listOfDishId = listOfDishId;
     }
@@ -121,5 +124,13 @@ public class ProductCreateDTO {
 
     public void setListOfDishId(List<Long> listOfDishId) {
         this.listOfDishId = listOfDishId;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
