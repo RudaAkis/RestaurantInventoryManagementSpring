@@ -2,11 +2,10 @@ package lt.javau12.RestaurantInventoryManager.mappers;
 
 import lt.javau12.RestaurantInventoryManager.dtos.ProductCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductDisplayDTO;
-import lt.javau12.RestaurantInventoryManager.entities.Category;
-import lt.javau12.RestaurantInventoryManager.entities.Product;
-import lt.javau12.RestaurantInventoryManager.entities.Unit;
-import lt.javau12.RestaurantInventoryManager.entities.Vendor;
+import lt.javau12.RestaurantInventoryManager.entities.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProductMapper {

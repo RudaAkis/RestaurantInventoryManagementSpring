@@ -13,6 +13,7 @@ public class ProductDisplayDTO {
     private String category;
     private String vendor;
     private LocalDateTime dateAdded;
+    private List<BasicDishDTO> dishes;
 
     public ProductDisplayDTO() {
     }

@@ -50,7 +50,9 @@ public class Product {
         this.dishes = dishes;
     }
 
-    public Product(String name, Double quantity, Unit unitOfMeasure, LocalDateTime expiryDate, Category category, Vendor vendor, LocalDateTime dateAdded) {
+    public Product(String name, Double quantity, Unit unitOfMeasure,
+                   LocalDateTime expiryDate, Category category,
+                   Vendor vendor, LocalDateTime dateAdded) {
         this.name = name;
         this.quantity = quantity;
         this.unitOfMeasure = unitOfMeasure;

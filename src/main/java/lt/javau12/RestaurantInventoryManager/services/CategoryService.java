@@ -3,7 +3,7 @@ package lt.javau12.RestaurantInventoryManager.services;
 import lt.javau12.RestaurantInventoryManager.dtos.CategoryDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Category;
 import lt.javau12.RestaurantInventoryManager.mappers.CategoryMapper;
-import lt.javau12.RestaurantInventoryManager.repositories.CetegoryRepository;
+import lt.javau12.RestaurantInventoryManager.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 public class CategoryService {
 
-    private final CetegoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public CategoryService(CetegoryRepository categoryRepository,
+    public CategoryService(CategoryRepository categoryRepository,
                            CategoryMapper categoryMapper){
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;

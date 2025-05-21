@@ -1,31 +1,25 @@
 package lt.javau12.RestaurantInventoryManager.dtos;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import lt.javau12.RestaurantInventoryManager.entities.Product;
 
 import java.util.List;
 
-public class DishDTO {
+public class DishDisplayDTO {
 
     private Long dishId;
     private String name;
-    private List<Product> products;
+    private List<BasicProductDTO> products;
 
-    //Constructros & Setters & Getters
-    /********************************************************************************/
-
-    public DishDTO() {
+    public DishDisplayDTO() {
     }
 
-    public DishDTO(Long dishId, String name, List<Product> products) {
+    public DishDisplayDTO(Long dishId, String name, List<BasicProductDTO> products) {
         this.dishId = dishId;
         this.name = name;
         this.products = products;
     }
 
-    public DishDTO(String name, List<Product> products) {
+    public DishDisplayDTO(String name, List<BasicProductDTO> products) {
         this.name = name;
         this.products = products;
     }
@@ -46,11 +40,11 @@ public class DishDTO {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
+    public List<BasicProductDTO> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<BasicProductDTO> products) {
         this.products = products;
     }
 }

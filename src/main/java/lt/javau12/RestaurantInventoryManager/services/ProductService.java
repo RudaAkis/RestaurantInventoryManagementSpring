@@ -2,16 +2,9 @@ package lt.javau12.RestaurantInventoryManager.services;
 
 import lt.javau12.RestaurantInventoryManager.dtos.ProductCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductDisplayDTO;
-import lt.javau12.RestaurantInventoryManager.entities.Category;
-import lt.javau12.RestaurantInventoryManager.entities.Product;
-import lt.javau12.RestaurantInventoryManager.entities.Unit;
-import lt.javau12.RestaurantInventoryManager.entities.Vendor;
+import lt.javau12.RestaurantInventoryManager.entities.*;
 import lt.javau12.RestaurantInventoryManager.mappers.ProductMapper;
-import lt.javau12.RestaurantInventoryManager.repositories.CetegoryRepository;
-import lt.javau12.RestaurantInventoryManager.repositories.ProductRepository;
-import lt.javau12.RestaurantInventoryManager.repositories.UnitRepository;
-import lt.javau12.RestaurantInventoryManager.repositories.VendorRepository;
-import org.springframework.http.ResponseEntity;
+import lt.javau12.RestaurantInventoryManager.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,18 +14,20 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final CetegoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     private final UnitRepository unitRepository;
     private final VendorRepository vendorRepository;
+    private final DishRepository dishRepository;
 
     public ProductService(ProductRepository productRepository, ProductMapper productMapper,
-                          CetegoryRepository categoryRepository, UnitRepository unitRepository,
-                          VendorRepository vendorRepository){
+                          CategoryRepository categoryRepository, UnitRepository unitRepository,
+                          VendorRepository vendorRepository, DishRepository dishRepository){
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.categoryRepository = categoryRepository;
         this.unitRepository = unitRepository;
         this.vendorRepository = vendorRepository;
+        this.dishRepository = dishRepository;
     }
 
     public List<ProductDisplayDTO> getAllProducts(){
@@ -49,9 +44,12 @@ public class ProductService {
         Vendor vendor = vendorRepository.findById(dto.getVendorId())
                 .orElseThrow( () -> new RuntimeException("No vendor with Id " + dto.getVendorId()) );
         Unit unit = unitRepository.findById(dto.getUnitOfMeasureId())
-                .orElseThrow(() -> new RuntimeException("No unit with Id " + dto.getVendorId()));
+                .orElseThrow(() -> new RuntimeException("No unit with Id " + dto.getUnitOfMeasureId()));
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("No category with Id " + dto.getVendorId()));
+                .orElseThrow(() -> new RuntimeException("No category with Id " + dto.getCategoryId()));
+//        List<Dish> dishes = dto.getListOfDishId() != null
+//                ? dishRepository.findAllById(dto.getListOfDishId())
+//                : List.of(); // return and emptu list if the dish ID list is null
         Product product = productMapper.toEntity(dto, unit, category, vendor);
         Product createdProduct = productRepository.save(product);
         return productMapper.toDisplayDTO(createdProduct);
@@ -61,9 +59,9 @@ public class ProductService {
         Vendor vendor = vendorRepository.findById(dto.getVendorId())
                 .orElseThrow( () -> new RuntimeException("No vendor with Id " + dto.getVendorId()) );
         Unit unit = unitRepository.findById(dto.getUnitOfMeasureId())
-                .orElseThrow(() -> new RuntimeException("No unit with Id " + dto.getVendorId()));
+                .orElseThrow(() -> new RuntimeException("No unit with Id " + dto.getUnitOfMeasureId()));
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("No category with Id " + dto.getVendorId()));
+                .orElseThrow(() -> new RuntimeException("No category with Id " + dto.getCategoryId()));
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No product found with id " + id));
         product.setCategory(category);
