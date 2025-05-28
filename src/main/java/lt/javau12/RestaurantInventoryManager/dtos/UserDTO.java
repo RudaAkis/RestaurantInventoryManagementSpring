@@ -1,37 +1,30 @@
-package lt.javau12.RestaurantInventoryManager.entities;
+package lt.javau12.RestaurantInventoryManager.dtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lt.javau12.RestaurantInventoryManager.utilities.Roles;
 
-@Entity
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     private String username;
     private String email;
-    private String password;
-
-    @Enumerated(EnumType.STRING)
     private Roles role;
 
-    public User() {
+    public UserDTO() {
     }
 
-    public User(Long userId, String username, String email, String password, Roles role) {
+    public UserDTO(Long userId, String username, String email, Roles role) {
         this.userId = userId;
         this.username = username;
         this.email = email;
-        this.password = password;
         this.role = role;
     }
 
-    public User(String username, String email, String password, Roles role) {
+    public UserDTO(String username, String email, Roles role) {
         this.username = username;
         this.email = email;
-        this.password = password;
         this.role = role;
     }
 
@@ -57,14 +50,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Roles getRole() {

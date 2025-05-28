@@ -36,23 +36,30 @@ public class DishService {
     }
 
     public DishDisplayDTO create(DishCreateDTO dto){
-        List<Product> products = dto.getProductIds() != null
-                ? productRepository.findAllById(dto.getProductIds())//Find all products by the ID list
-                : List.of();//If id list is null return an empty list
-        Dish entity = dishMapper.toEntity(dto, products);
-        Dish createdDish = dishRepository.save(entity);
-        return dishMapper.toDisplayDTO(createdDish);
+        //Get the list of all product Id's fro mthe DTO
+        List<Long> productIds = dto.getProducts().stream()
+                .map(p -> p.getProductId())
+                .toList();
+        //With the list of the ID's find all products that we need to add to the dish
+        List<Product> products = productRepository.findAllById(productIds);
+        //Using the mapper create the dish entity with the products we got
+        Dish dish = dishMapper.toEntity(dto, products);
+        Dish saved = dishRepository.save(dish);
+        return dishMapper.toDisplayDTO(saved);
     }
 
     public DishDisplayDTO update(DishCreateDTO dto, Long id){
-        Dish dish = dishRepository.findById(id).orElseThrow( () -> new RuntimeException("No dish was found with id " + id) );
-        List<Product> products = dto.getProductIds() != null
-                ? productRepository.findAllById(dto.getProductIds())
-                : List.of();
-        dish.setName(dto.getName());
-        dish.setProducts(products);
-        Dish updatedDish = dishRepository.save(dish);
-        return dishMapper.toDisplayDTO(updatedDish);
+        //Find existing Dish
+        Dish existing = dishRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dish not found with id: " + id));
+        List<Long> productIds = dto.getProducts().stream()
+                .map(p -> p.getProductId())
+                .toList();
+        List<Product> products = productRepository.findAllById(productIds);
+        Dish updated = dishMapper.toEntity(dto, products);
+        updated.setDishId(id);
+        Dish saved = dishRepository.save(updated);
+        return dishMapper.toDisplayDTO(saved);
     }
 
     public boolean delete(Long id){

@@ -8,7 +8,7 @@ public class DishCreateDTO {
 
     private Long dishId;
     private String name;
-    private List<Long> productIds;
+    private List<DishProductDTO> products;
 
     //Constructros & Setters & Getters
     /********************************************************************************/
@@ -16,15 +16,15 @@ public class DishCreateDTO {
     public DishCreateDTO() {
     }
 
-    public DishCreateDTO(Long dishId, String name, List<Long> productIds) {
+    public DishCreateDTO(Long dishId, String name, List<DishProductDTO> products) {
         this.dishId = dishId;
         this.name = name;
-        this.productIds = productIds;
+        this.products = products;
     }
 
-    public DishCreateDTO(String name, List<Long> productIds) {
+    public DishCreateDTO(String name, List<DishProductDTO> products) {
         this.name = name;
-        this.productIds = productIds;
+        this.products = products;
     }
 
     public Long getDishId() {
@@ -43,11 +43,11 @@ public class DishCreateDTO {
         this.name = name;
     }
 
-    public List<Long> getProductIds() {
-        return productIds;
+    public List<DishProductDTO> getProducts() {
+        return products;
     }
 
-    public void setProductIds(List<Long> productIds) {
-        this.productIds = productIds;
+    public void setProducts(List<DishProductDTO> products) {
+        this.products = products;
     }
 }

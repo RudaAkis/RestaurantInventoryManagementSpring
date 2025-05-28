@@ -13,13 +13,8 @@ public class Dish {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "dish_products",
-            joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DishProduct> products;
 
     //Constructros & Setters & Getters
     /********************************************************************************/
@@ -27,13 +22,13 @@ public class Dish {
     public Dish() {
     }
 
-    public Dish(Long dishId, String name, List<Product> products) {
+    public Dish(Long dishId, String name, List<DishProduct> products) {
         this.dishId = dishId;
         this.name = name;
         this.products = products;
     }
 
-    public Dish(String name, List<Product> products) {
+    public Dish(String name, List<DishProduct> products) {
         this.name = name;
         this.products = products;
     }
@@ -54,11 +49,11 @@ public class Dish {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
+    public List<DishProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<DishProduct> products) {
         this.products = products;
     }
 }

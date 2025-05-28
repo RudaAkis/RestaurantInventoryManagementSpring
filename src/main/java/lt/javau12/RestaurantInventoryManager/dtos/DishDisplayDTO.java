@@ -5,21 +5,14 @@ import lt.javau12.RestaurantInventoryManager.entities.Product;
 import java.util.List;
 
 public class DishDisplayDTO {
-
     private Long dishId;
     private String name;
-    private List<BasicProductDTO> products;
+    private List<DishProductDisplayDTO> products;
 
-    public DishDisplayDTO() {
-    }
+    public DishDisplayDTO() {}
 
-    public DishDisplayDTO(Long dishId, String name, List<BasicProductDTO> products) {
+    public DishDisplayDTO(Long dishId, String name, List<DishProductDisplayDTO> products) {
         this.dishId = dishId;
-        this.name = name;
-        this.products = products;
-    }
-
-    public DishDisplayDTO(String name, List<BasicProductDTO> products) {
         this.name = name;
         this.products = products;
     }
@@ -40,11 +33,11 @@ public class DishDisplayDTO {
         this.name = name;
     }
 
-    public List<BasicProductDTO> getProducts() {
+    public List<DishProductDisplayDTO> getIngredients() {
         return products;
     }
 
-    public void setProducts(List<BasicProductDTO> products) {
+    public void setIngredients(List<DishProductDisplayDTO> products) {
         this.products = products;
     }
 }

@@ -31,8 +31,8 @@ public class Product {
 
     private LocalDateTime dateAdded;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Dish> dishes;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DishProduct> dishes;
 
     //Constructros & Setters & Getters
     /********************************************************************************/
@@ -41,7 +41,7 @@ public class Product {
 
     public Product(String name, Double quantity, Unit unitOfMeasure,
                    LocalDateTime expiryDate, Category category,
-                   Vendor vendor, Double price, LocalDateTime dateAdded, List<Dish> dishes) {
+                   Vendor vendor, Double price, LocalDateTime dateAdded, List<DishProduct> dishes) {
         this.name = name;
         this.quantity = quantity;
         this.unitOfMeasure = unitOfMeasure;
@@ -130,11 +130,11 @@ public class Product {
         this.dateAdded = dateAdded;
     }
 
-    public List<Dish> getDishes() {
+    public List<DishProduct> getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<Dish> dishes) {
+    public void setDishes(List<DishProduct> dishes) {
         this.dishes = dishes;
     }
 

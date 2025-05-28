@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory/vendors")
+@CrossOrigin
 public class VendorController {
 
     private final VendorService vendorService;

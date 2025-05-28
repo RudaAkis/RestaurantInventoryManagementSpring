@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory/units") //EXAMPLE URL localhost:8080/api/inventory/units
+@CrossOrigin
 public class UnitController {
 
     private final UnitService unitService;

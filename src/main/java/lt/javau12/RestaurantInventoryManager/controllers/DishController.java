@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory/dishes")
+@CrossOrigin
 public class DishController {
 
     private final DishService dishService;

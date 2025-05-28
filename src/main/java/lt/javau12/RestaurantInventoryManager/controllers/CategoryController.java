@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory/category")
+@CrossOrigin
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -19,7 +20,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all") //Example URL localhost:8080/api/inventory/category/all
     public ResponseEntity<List<CategoryDTO>> getAllCategories(){
         return ResponseEntity.ok(categoryService.getAllCategories());
     }

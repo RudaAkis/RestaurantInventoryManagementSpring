@@ -35,14 +35,14 @@ public class ProductCreateDTO {
         this.categoryId = categoryId;
         this.vendorId = vendorId;
         this.price = price;
-        this.dateAdded = dateAdded;
+        this.dateAdded = LocalDateTime.now();
         this.listOfDishId = listOfDishId;
     }
 
     //No Id constructor
     public ProductCreateDTO(String name, Double quantity, Long unitOfMeasureId,
                             LocalDateTime expiryDate, Long categoryId, Long vendorId,Double price,
-                            LocalDateTime dateAdded, List<Long> listOfDishId) {
+                            List<Long> listOfDishId) {
         this.name = name;
         this.quantity = quantity;
         this.unitOfMeasureId = unitOfMeasureId;
@@ -50,7 +50,7 @@ public class ProductCreateDTO {
         this.categoryId = categoryId;
         this.vendorId = vendorId;
         this.price = price;
-        this.dateAdded = dateAdded;
+        this.dateAdded = LocalDateTime.now();
         this.listOfDishId = listOfDishId;
     }
 

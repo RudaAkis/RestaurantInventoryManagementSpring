@@ -7,6 +7,7 @@ import lt.javau12.RestaurantInventoryManager.mappers.ProductMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -47,10 +48,8 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("No unit with Id " + dto.getUnitOfMeasureId()));
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("No category with Id " + dto.getCategoryId()));
-//        List<Dish> dishes = dto.getListOfDishId() != null
-//                ? dishRepository.findAllById(dto.getListOfDishId())
-//                : List.of(); // return and emptu list if the dish ID list is null
         Product product = productMapper.toEntity(dto, unit, category, vendor);
+        product.setDateAdded(LocalDateTime.now());
         Product createdProduct = productRepository.save(product);
         return productMapper.toDisplayDTO(createdProduct);
     }
@@ -68,7 +67,6 @@ public class ProductService {
         product.setName(dto.getName());
         product.setExpiryDate(dto.getExpiryDate());
         product.setQuantity(dto.getQuantity());
-        product.setDateAdded(dto.getDateAdded());
         product.setUnitOfMeasure(unit);
         product.setVendor(vendor);
         Product updatedProduct = productRepository.save(product);
