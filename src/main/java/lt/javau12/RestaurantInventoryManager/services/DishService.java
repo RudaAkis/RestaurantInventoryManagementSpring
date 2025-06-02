@@ -1,14 +1,19 @@
 package lt.javau12.RestaurantInventoryManager.services;
 
+import jakarta.transaction.Transactional;
 import lt.javau12.RestaurantInventoryManager.dtos.DishCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.DishDisplayDTO;
+import lt.javau12.RestaurantInventoryManager.dtos.DishProductDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Dish;
+import lt.javau12.RestaurantInventoryManager.entities.DishProduct;
 import lt.javau12.RestaurantInventoryManager.entities.Product;
 import lt.javau12.RestaurantInventoryManager.mappers.DishMapper;
+import lt.javau12.RestaurantInventoryManager.repositories.DishProductRepository;
 import lt.javau12.RestaurantInventoryManager.repositories.DishRepository;
 import lt.javau12.RestaurantInventoryManager.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,12 +22,14 @@ public class DishService {
     private final DishRepository dishRepository;
     private final DishMapper dishMapper;
     private final ProductRepository productRepository;
+    private final DishProductRepository dishProductRepository;
 
     public DishService(DishRepository dishRepository, DishMapper dishMapper,
-                       ProductRepository productRepository){
+                       ProductRepository productRepository, DishProductRepository dishProductRepository){
         this.dishRepository = dishRepository;
         this.dishMapper = dishMapper;
         this.productRepository = productRepository;
+        this.dishProductRepository = dishProductRepository;
     }
 
     public List<DishDisplayDTO> getAllDishes(){
@@ -48,17 +55,30 @@ public class DishService {
         return dishMapper.toDisplayDTO(saved);
     }
 
+    @Transactional//This is used to make sure all of the needed queries happen at the same call
     public DishDisplayDTO update(DishCreateDTO dto, Long id){
         //Find existing Dish
         Dish existing = dishRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dish not found with id: " + id));
-        List<Long> productIds = dto.getProducts().stream()
-                .map(p -> p.getProductId())
-                .toList();
-        List<Product> products = productRepository.findAllById(productIds);
-        Dish updated = dishMapper.toEntity(dto, products);
-        updated.setDishId(id);
-        Dish saved = dishRepository.save(updated);
+
+        existing.getProducts().clear();//removess all preivous products that were attached to dish in the join table
+//        dishRepository.save(existing);
+        dishProductRepository.deleteByDishDishId(id);
+
+        existing.setName(dto.getName());
+        List<DishProduct> dishProducts = new ArrayList<>();
+        for(DishProductDTO p : dto.getProducts()){
+            DishProduct dishProduct = new DishProduct();
+            dishProduct.setDish(existing);
+            Product product = productRepository.findById(p.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Prodcut was not found with id: "+ p.getProductId()));
+            dishProduct.setProduct(product);
+            dishProduct.setQuantity(p.getQuantity());
+
+            dishProducts.add(dishProduct);
+        }
+        existing.getProducts().addAll(dishProducts);
+        Dish saved = dishRepository.save(existing);
         return dishMapper.toDisplayDTO(saved);
     }
 

@@ -1,13 +1,15 @@
 package lt.javau12.RestaurantInventoryManager.dtos;
 
 public class DishProductDisplayDTO {
+    private Long productId;
     private String productName;
     private Double quantity;
     private String unit;
 
     public DishProductDisplayDTO() {}
 
-    public DishProductDisplayDTO(String productName, Double quantity, String unit) {
+    public DishProductDisplayDTO(Long productId, String productName, Double quantity, String unit) {
+        this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
         this.unit = unit;
@@ -35,5 +37,13 @@ public class DishProductDisplayDTO {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }

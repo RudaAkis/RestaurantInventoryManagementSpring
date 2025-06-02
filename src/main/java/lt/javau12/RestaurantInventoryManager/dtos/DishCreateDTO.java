@@ -50,4 +50,6 @@ public class DishCreateDTO {
     public void setProducts(List<DishProductDTO> products) {
         this.products = products;
     }
+
+
 }

@@ -50,6 +50,7 @@ public class DishMapper {
                 .map(dishProduct -> {
                     Product product = dishProduct.getProduct();
                     return new DishProductDisplayDTO(
+                            product.getProductId(),
                             product.getName(),
                             dishProduct.getQuantity(),
                             product.getUnitOfMeasure().getName()
