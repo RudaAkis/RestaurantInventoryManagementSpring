@@ -80,7 +80,10 @@ public class AuthController {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-        String jwt = jwtUtils.generateToken(request.getUsername());
+
+        User user = userRepo.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found with username " + request.getUsername()));
+
+        String jwt = jwtUtils.generateToken(user);
 
         return ResponseEntity.ok(new LoginResponse(jwt));
     }

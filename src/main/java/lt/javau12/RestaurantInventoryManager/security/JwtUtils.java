@@ -3,9 +3,13 @@ package lt.javau12.RestaurantInventoryManager.security;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
+import lt.javau12.RestaurantInventoryManager.entities.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,12 +32,20 @@ public class JwtUtils {
     }
 
 
-    public String generateToken(String username) {
+    public String generateToken(User user) {
         Instant now = Instant.now();
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole());
+        claims.put("firstname", user.getFirstname());
+        claims.put("lastname", user.getLastname());
+        claims.put("email", user.getEmail());
+
         return Jwts.builder()
-                .subject(username)
+                .subject(user.getUsername())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plusMillis(expirationMillis)))
+                .claims(claims)
                 .signWith(secretKey)
                 .compact();
     }
