@@ -5,10 +5,16 @@ import lt.javau12.RestaurantInventoryManager.dtos.ProductDisplayDTO;
 import lt.javau12.RestaurantInventoryManager.entities.*;
 import lt.javau12.RestaurantInventoryManager.mappers.ProductMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.*;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -80,5 +86,42 @@ public class ProductService {
         }
         return false;
     }
+
+    public List<ProductDisplayDTO> getFilteredProducts(Long categoryId, Long vendorId, String sort, String order, Integer daysBeforeExpiry) {
+
+        // Build the Specification (dynamic query)
+        Specification<Product> spec = Specification.where(null);
+
+        if (categoryId != null) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("category").get("categoryId"), categoryId));
+        }
+
+        if (vendorId != null) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("vendor").get("vendorId"), vendorId));
+        }
+
+        if (daysBeforeExpiry != null) {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime targetDate = now.plusDays(daysBeforeExpiry);
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.lessThanOrEqualTo(root.get("expiryDate"), targetDate));
+        }
+
+        Sort sortOrder = Sort.unsorted();
+        if (sort != null && order != null) {
+            Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+            sortOrder = Sort.by(direction, sort);
+        }
+
+        List<Product> products = productRepository.findAll(spec, sortOrder);
+
+        // Map to DTO list and return
+        return products.stream()
+                .map(productMapper::toDisplayDTO)
+                .collect(Collectors.toList());
+    }
+
 
 }

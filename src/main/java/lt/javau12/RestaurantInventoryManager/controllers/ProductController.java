@@ -47,4 +47,15 @@ public class ProductController {
                 : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/products")
+    public ResponseEntity<List<ProductDisplayDTO>> getFilteredProducts(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long vendorId,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String order,
+            @RequestParam(required = false) Integer daysBeforeExpiry
+    ) {
+        return ResponseEntity.ok(productService.getFilteredProducts(categoryId, vendorId, sort, order, daysBeforeExpiry));
+    }
+
 }

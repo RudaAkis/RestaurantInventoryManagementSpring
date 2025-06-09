@@ -89,4 +89,24 @@ public class DishService {
         }
         return false;
     }
+
+    @Transactional //This is used to save all dishes to the repository in one query
+    public void makeDish(Long dishId, Long dishCount){
+        Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new RuntimeException("The dish was not found with id " + dishId));
+
+        for (DishProduct dp : dish.getProducts()){
+            Product product = dp.getProduct();
+            Double productQuantityInInventory = product.getQuantity();
+            Double quantityOfProductInDish = dp.getQuantity();
+            Double totalQuantityForAllDishes = quantityOfProductInDish * dishCount;
+
+            if (productQuantityInInventory < totalQuantityForAllDishes){
+                throw new RuntimeException("Not enough products in Inventory to make dishes");
+            }
+
+            product.setQuantity(productQuantityInInventory - totalQuantityForAllDishes);
+            productRepository.save(product);
+        }
+
+    }
 }

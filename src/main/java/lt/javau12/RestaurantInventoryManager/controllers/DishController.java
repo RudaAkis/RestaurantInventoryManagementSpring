@@ -47,4 +47,10 @@ public class DishController {
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/{id}/make/{count}")
+    public ResponseEntity<String> makeDish(@PathVariable Long id, @PathVariable Long count){
+        dishService.makeDish(id, count);
+        return ResponseEntity.ok(count + " selected dish made succesfully");
+    }
 }
