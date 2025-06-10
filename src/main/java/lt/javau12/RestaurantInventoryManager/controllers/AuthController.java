@@ -3,23 +3,24 @@ package lt.javau12.RestaurantInventoryManager.controllers;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.LoginRequest;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.LoginResponse;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.SignupRequest;
+import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.UserDisplayDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Role;
 import lt.javau12.RestaurantInventoryManager.entities.User;
 import lt.javau12.RestaurantInventoryManager.repositories.UserRepository;
 import lt.javau12.RestaurantInventoryManager.security.JwtUtils;
+import lt.javau12.RestaurantInventoryManager.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    private final AuthService authService;
 
     private final UserRepository userRepo;
 
@@ -29,17 +30,18 @@ public class AuthController {
 
     private final JwtUtils jwtUtils;
 
-    public AuthController(UserRepository userRepo,
+    public AuthController(AuthService authService, UserRepository userRepo,
                           AuthenticationManager authenticationManager,
                           PasswordEncoder passwordEncoder,
                           JwtUtils jwtUtils) {
+        this.authService = authService;
         this.userRepo = userRepo;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
     }
 
-    @PostMapping("/create/user") // url /auth/create_user
+    @PostMapping("/create/user") // url /auth/create/user
     public ResponseEntity<String> createUser(@RequestBody SignupRequest request){
         if (!request.getFirstPassword().equals(request.getRepeatPassword())){
             throw new RuntimeException("Password do not match");
@@ -51,7 +53,7 @@ public class AuthController {
         return ResponseEntity.ok("User Registered Successfully");
     }
 
-    @PostMapping("/create/manager") // url /auth/create_manager
+    @PostMapping("/create/manager") // url /auth/create/manager
     public ResponseEntity<String> createManager(@RequestBody SignupRequest request){
         if (!request.getFirstPassword().equals(request.getRepeatPassword())){
             throw new RuntimeException("Password do not match");
@@ -63,7 +65,7 @@ public class AuthController {
         return ResponseEntity.ok("Manager Registered Successfully");
     }
 
-    @PostMapping("/create/admin") // url /auth/create_admin
+    @PostMapping("/create/admin") // url /auth/create/admin
     public ResponseEntity<String> createAdmin(@RequestBody SignupRequest request){
         if (!request.getFirstPassword().equals(request.getRepeatPassword())){
             throw new RuntimeException("Password do not match");
@@ -77,18 +79,19 @@ public class AuthController {
 
     @PostMapping("/login") // url /auth/login
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-
-        User user = userRepo.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found with username " + request.getUsername()));
-
-        String jwt = jwtUtils.generateToken(user);
-
-        return ResponseEntity.ok(new LoginResponse(jwt));
+        return ResponseEntity.ok(authService.login(request));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDisplayDTO> update(@RequestBody SignupRequest signupRequest, Long id){
+        return ResponseEntity.ok(authService.updateUser(signupRequest, id));
+    }
 
-
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        return authService.delete(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
+    }
 
 }
