@@ -94,7 +94,7 @@ public class AuthController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDisplayDTO> update(@RequestBody SignupRequest signupRequest, Long id){
+    public ResponseEntity<UserDisplayDTO> update(@RequestBody SignupRequest signupRequest, @PathVariable Long id){
         return ResponseEntity.ok(authService.updateUser(signupRequest, id));
     }
 
