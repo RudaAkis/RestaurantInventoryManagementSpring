@@ -15,6 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AuthService {
 
@@ -53,13 +56,18 @@ public class AuthService {
         return new LoginResponse(jwt);
     }
 
+    public List<UserDisplayDTO> getAllUsers(){
+        List<User> users = userRepo.findAll();
+        return users.stream().map(userMapper::toDTO).collect(Collectors.toList());
+    }
+
     public UserDisplayDTO updateUser(SignupRequest signupRequest, Long id){
         User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User was not found with id " + id));
 
         user.setFirstname(signupRequest.getFirstname());
         user.setLastname(signupRequest.getLastname());
         user.setEmail(signupRequest.getEmail());
-        user.setRole(role);
+        user.setRole(signupRequest.getRole());
         user.setUsername(signupRequest.getUsername());
 
         User updatedUser = userRepo.save(user);

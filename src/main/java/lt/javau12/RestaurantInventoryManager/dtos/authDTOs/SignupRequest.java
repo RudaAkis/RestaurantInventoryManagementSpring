@@ -1,5 +1,7 @@
 package lt.javau12.RestaurantInventoryManager.dtos.authDTOs;
 
+import lt.javau12.RestaurantInventoryManager.entities.Role;
+
 public class SignupRequest {
 
     private String firstname;
@@ -8,17 +10,20 @@ public class SignupRequest {
     private String username;
     private String firstPassword;
     private String repeatPassword;
+    private Role role;
 
     public SignupRequest() {
     }
 
-    public SignupRequest(String firstname, String lastname, String email, String username, String firstPassword, String repeatPassword) {
+    public SignupRequest(String firstname, String lastname, String email, String username,
+                         String firstPassword, String repeatPassword, Role role) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.username = username;
         this.firstPassword = firstPassword;
         this.repeatPassword = repeatPassword;
+        this.role = role;
     }
 
     public String getFirstname() {
@@ -67,5 +72,13 @@ public class SignupRequest {
 
     public void setRepeatPassword(String repeatPassword) {
         this.repeatPassword = repeatPassword;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

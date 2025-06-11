@@ -62,6 +62,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()//Public End point for logging in
                         .requestMatchers("/auth/create/**").hasRole("ADMIN")//End points for creating users,managers and admins
+                        .requestMatchers("/auth/all").hasRole("ADMIN")
                         //For Product endpoints
                         .requestMatchers(HttpMethod.GET, API_PREFIX + "/products/**").hasAnyRole("ADMIN", "MANAGER", "USER")
                         .requestMatchers(HttpMethod.POST, API_PREFIX + "/products").hasRole("ADMIN")
