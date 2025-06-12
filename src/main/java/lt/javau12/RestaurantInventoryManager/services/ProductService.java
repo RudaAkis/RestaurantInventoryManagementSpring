@@ -3,10 +3,15 @@ package lt.javau12.RestaurantInventoryManager.services;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductDisplayDTO;
 import lt.javau12.RestaurantInventoryManager.entities.*;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.CategoryNotFoundException;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.ProductNotFoundException;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.UnitNotFoundException;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.VendorNotFoundException;
 import lt.javau12.RestaurantInventoryManager.mappers.ProductMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,17 +48,17 @@ public class ProductService {
     }
 
     public ProductDisplayDTO getProductById(Long id){
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("No product with id " + id));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("No product with id " + id));
         return productMapper.toDisplayDTO(product);
     }
 
     public ProductDisplayDTO create(ProductCreateDTO dto){
         Vendor vendor = vendorRepository.findById(dto.getVendorId())
-                .orElseThrow( () -> new RuntimeException("No vendor with Id " + dto.getVendorId()) );
+                .orElseThrow( () -> new VendorNotFoundException("No vendor with Id " + dto.getVendorId()) );
         Unit unit = unitRepository.findById(dto.getUnitOfMeasureId())
-                .orElseThrow(() -> new RuntimeException("No unit with Id " + dto.getUnitOfMeasureId()));
+                .orElseThrow(() -> new UnitNotFoundException("No unit with Id " + dto.getUnitOfMeasureId()));
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("No category with Id " + dto.getCategoryId()));
+                .orElseThrow(() -> new CategoryNotFoundException("No category with Id " + dto.getCategoryId()));
         Product product = productMapper.toEntity(dto, unit, category, vendor);
         product.setDateAdded(LocalDateTime.now());
         Product createdProduct = productRepository.save(product);
@@ -62,13 +67,13 @@ public class ProductService {
 
     public ProductDisplayDTO update(ProductCreateDTO dto, Long id){
         Vendor vendor = vendorRepository.findById(dto.getVendorId())
-                .orElseThrow( () -> new RuntimeException("No vendor with Id " + dto.getVendorId()) );
+                .orElseThrow( () -> new VendorNotFoundException("No vendor with Id " + dto.getVendorId()) );
         Unit unit = unitRepository.findById(dto.getUnitOfMeasureId())
-                .orElseThrow(() -> new RuntimeException("No unit with Id " + dto.getUnitOfMeasureId()));
+                .orElseThrow(() -> new UnitNotFoundException("No unit with Id " + dto.getUnitOfMeasureId()));
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("No category with Id " + dto.getCategoryId()));
+                .orElseThrow(() -> new CategoryNotFoundException("No category with Id " + dto.getCategoryId()));
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No product found with id " + id));
+                .orElseThrow(() -> new ProductNotFoundException("No product found with id " + id));
         product.setCategory(category);
         product.setName(dto.getName());
         product.setExpiryDate(dto.getExpiryDate());
@@ -89,7 +94,7 @@ public class ProductService {
 
     public List<ProductDisplayDTO> getFilteredProducts(Long categoryId, Long vendorId, String sort, String order, Integer daysBeforeExpiry) {
 
-        // Build the Specification (dynamic query)
+        // Build the Specification (which is basically to represent the WHERE clause in SQL
         Specification<Product> spec = Specification.where(null);
 
         if (categoryId != null) {

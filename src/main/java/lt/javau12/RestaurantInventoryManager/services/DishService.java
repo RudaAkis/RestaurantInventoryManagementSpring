@@ -7,6 +7,9 @@ import lt.javau12.RestaurantInventoryManager.dtos.DishProductDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Dish;
 import lt.javau12.RestaurantInventoryManager.entities.DishProduct;
 import lt.javau12.RestaurantInventoryManager.entities.Product;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.DishNotFoundException;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.NotEnoughProductException;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.ProductNotFoundException;
 import lt.javau12.RestaurantInventoryManager.mappers.DishMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.DishProductRepository;
 import lt.javau12.RestaurantInventoryManager.repositories.DishRepository;
@@ -38,7 +41,7 @@ public class DishService {
     }
 
     public DishDisplayDTO getDishById(Long id){
-        Dish dish = dishRepository.findById(id).orElseThrow( () -> new RuntimeException("No dish found with Id" + id) );
+        Dish dish = dishRepository.findById(id).orElseThrow( () -> new DishNotFoundException("No dish found with ID " + id) );
         return dishMapper.toDisplayDTO(dish);
     }
 
@@ -59,7 +62,7 @@ public class DishService {
     public DishDisplayDTO update(DishCreateDTO dto, Long id){
         //Find existing Dish
         Dish existing = dishRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dish not found with id: " + id));
+                .orElseThrow(() -> new DishNotFoundException("Dish not found with id: " + id));
 
         existing.getProducts().clear();//removess all preivous products that were attached to dish in the join table
 //        dishRepository.save(existing);
@@ -71,7 +74,7 @@ public class DishService {
             DishProduct dishProduct = new DishProduct();
             dishProduct.setDish(existing);
             Product product = productRepository.findById(p.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Prodcut was not found with id: "+ p.getProductId()));
+                    .orElseThrow(() -> new ProductNotFoundException("Prodcut was not found with ID: "+ p.getProductId()));
             dishProduct.setProduct(product);
             dishProduct.setQuantity(p.getQuantity());
 
@@ -92,7 +95,7 @@ public class DishService {
 
     @Transactional //This is used to save all dishes to the repository in one query
     public void makeDish(Long dishId, Long dishCount){
-        Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new RuntimeException("The dish was not found with id " + dishId));
+        Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new DishNotFoundException("The dish was not found with id " + dishId));
 
         for (DishProduct dp : dish.getProducts()){
             Product product = dp.getProduct();
@@ -101,7 +104,9 @@ public class DishService {
             Double totalQuantityForAllDishes = quantityOfProductInDish * dishCount;
 
             if (productQuantityInInventory < totalQuantityForAllDishes){
-                throw new RuntimeException("Not enough products in Inventory to make dishes");
+                throw new NotEnoughProductException("Not enough " + product.getName() +
+                        " to make " + dishCount + " " + dish.getName() +
+                        ". Select a different number of dishes to make and try again");
             }
 
             product.setQuantity(productQuantityInInventory - totalQuantityForAllDishes);
