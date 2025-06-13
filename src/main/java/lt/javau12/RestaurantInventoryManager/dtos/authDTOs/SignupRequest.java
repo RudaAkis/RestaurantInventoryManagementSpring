@@ -1,15 +1,33 @@
 package lt.javau12.RestaurantInventoryManager.dtos.authDTOs;
 
+import jakarta.validation.constraints.*;
 import lt.javau12.RestaurantInventoryManager.entities.Role;
 
 public class SignupRequest {
 
+    @NotBlank(message = "Firstname is required")
     private String firstname;
+
+    @NotBlank(message = "Lastname is required")
     private String lastname;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email format is not valid: example@gmail.com")
     private String email;
+
+    @NotBlank(message = "Username is required")
     private String username;
+
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
+            message = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    )
+    @NotBlank(message = "Password cannot be empty")
     private String firstPassword;
     private String repeatPassword;
+
+    @NotBlank(message = "Role needs to be selected")
     private Role role;
 
     public SignupRequest() {

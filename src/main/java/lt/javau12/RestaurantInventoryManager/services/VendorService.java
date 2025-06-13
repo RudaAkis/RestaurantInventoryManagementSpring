@@ -2,6 +2,7 @@ package lt.javau12.RestaurantInventoryManager.services;
 
 import lt.javau12.RestaurantInventoryManager.dtos.VendorDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Vendor;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.VendorNotFoundException;
 import lt.javau12.RestaurantInventoryManager.mappers.VendorMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.VendorRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class VendorService {
     }
 
     public VendorDTO getVendorById(Long id){
-        Vendor vendor = vendorRepository.findById(id).orElseThrow( () -> new RuntimeException("No vendor found with id " + id) );
+        Vendor vendor = vendorRepository.findById(id).orElseThrow( () -> new VendorNotFoundException("No vendor found with ID: " + id) );
         return vendorMapper.toDTO(vendor);
     }
 
@@ -37,7 +38,7 @@ public class VendorService {
     }
 
     public VendorDTO update(VendorDTO dto, Long id){
-        Vendor vendor = vendorRepository.findById(id).orElseThrow( () -> new RuntimeException("No vendor found with id " + id) );
+        Vendor vendor = vendorRepository.findById(id).orElseThrow( () -> new VendorNotFoundException("No vendor found with ID: " + id) );
         vendor.setName(dto.getName());
         vendor.setEmail(dto.getEmail());
         vendor.setPhoneNumber(dto.getPhoneNumber());

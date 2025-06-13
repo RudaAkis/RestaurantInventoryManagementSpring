@@ -6,6 +6,7 @@ import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.SignupRequest;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.UserDisplayDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Role;
 import lt.javau12.RestaurantInventoryManager.entities.User;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.UserNotFoundException;
 import lt.javau12.RestaurantInventoryManager.mappers.UserMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.UserRepository;
 import lt.javau12.RestaurantInventoryManager.security.JwtUtils;
@@ -49,7 +50,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        User user = userRepo.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("User not found with username " + request.getUsername()));
+        User user = userRepo.findByUsername(request.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found with username " + request.getUsername()));
 
         String jwt = jwtUtils.generateToken(user);
 
@@ -62,7 +63,7 @@ public class AuthService {
     }
 
     public UserDisplayDTO updateUser(SignupRequest signupRequest, Long id){
-        User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User was not found with id " + id));
+        User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User was not found with id " + id));
 
         user.setFirstname(signupRequest.getFirstname());
         user.setLastname(signupRequest.getLastname());

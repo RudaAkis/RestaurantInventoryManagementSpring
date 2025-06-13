@@ -1,19 +1,40 @@
 package lt.javau12.RestaurantInventoryManager.dtos;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProductCreateDTO {
 
     private Long productId;
+
+    @NotBlank(message = "Product Name required")
     private String name;
+
+    @Positive(message = "Quantity must be greater than 0")
     private Double quantity;
+
+    @Positive(message = "Unit of measure is required")
     private Long unitOfMeasureId;
+
+    @Future(message = "Date must be set in the future")
     private LocalDateTime expiryDate;
+
+    @Positive(message = "Category is required")
     private Long categoryId;
+
+    @Positive(message = "Vendor is required")
     private Long vendorId;
+
+    @Positive(message = "Price must be greater than 0")
     private Double price;
+
+
     private LocalDateTime dateAdded;
+
     private List<Long> listOfDishId;
 
     /********************************************************************************/

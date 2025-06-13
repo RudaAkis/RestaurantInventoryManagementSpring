@@ -1,5 +1,6 @@
 package lt.javau12.RestaurantInventoryManager.controllers;
 
+import jakarta.validation.Valid;
 import lt.javau12.RestaurantInventoryManager.dtos.UnitDTO;
 import lt.javau12.RestaurantInventoryManager.services.UnitService;
 import org.springframework.http.HttpStatusCode;
@@ -31,7 +32,7 @@ public class UnitController {
     }
 
     @PostMapping
-    public ResponseEntity<UnitDTO> create(@RequestBody UnitDTO unitDTO){
+    public ResponseEntity<UnitDTO> create(@Valid @RequestBody UnitDTO unitDTO){
         UnitDTO unitCreated = unitService.create(unitDTO);
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(unitCreated);
     }

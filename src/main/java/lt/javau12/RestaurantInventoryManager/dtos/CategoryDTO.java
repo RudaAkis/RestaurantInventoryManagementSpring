@@ -1,9 +1,12 @@
 package lt.javau12.RestaurantInventoryManager.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CategoryDTO {
 
     private Long categoryId;
 
+    @NotBlank(message = "Category name is required")
     private String name;
 
     //Constructros & Setters & Getters

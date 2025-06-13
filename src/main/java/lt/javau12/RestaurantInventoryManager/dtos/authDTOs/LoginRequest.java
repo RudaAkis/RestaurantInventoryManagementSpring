@@ -1,7 +1,13 @@
 package lt.javau12.RestaurantInventoryManager.dtos.authDTOs;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginRequest {
+
+    @NotBlank(message = "Enter username to login")
     private String username;
+
+    @NotBlank(message = "Enter password to login")
     private String password;
 
     public LoginRequest() {

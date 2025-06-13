@@ -1,5 +1,6 @@
 package lt.javau12.RestaurantInventoryManager.dtos;
 
+import jakarta.validation.constraints.NotBlank;
 import lt.javau12.RestaurantInventoryManager.entities.Product;
 
 import java.util.List;
@@ -7,7 +8,10 @@ import java.util.List;
 public class DishCreateDTO {
 
     private Long dishId;
+
+    @NotBlank(message = "Dish name is required")
     private String name;
+
     private List<DishProductDTO> products;
 
     //Constructros & Setters & Getters

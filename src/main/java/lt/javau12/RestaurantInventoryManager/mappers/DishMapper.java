@@ -2,6 +2,7 @@ package lt.javau12.RestaurantInventoryManager.mappers;
 
 import lt.javau12.RestaurantInventoryManager.dtos.*;
 import lt.javau12.RestaurantInventoryManager.entities.*;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.ProductNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class DishMapper {
                     //Find the correlating product in the map with the same ID as the Key
                     Product product = productMap.get(productDTO.getProductId());
                     if (product == null) {
-                        throw new IllegalArgumentException("Product not found with ID: " + productDTO.getProductId());
+                        throw new ProductNotFoundException("Product not found with ID: " + productDTO.getProductId());
                     }
                     //If product is found in Map with that ID create a new DishProduct Entity for the join table
                     return new DishProduct(dish, product, productDTO.getQuantity());

@@ -1,8 +1,12 @@
 package lt.javau12.RestaurantInventoryManager.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class VendorDTO {
 
     private Long vendorId;
+
+    @NotBlank(message = "Vendor name is required")
     private String name;
     private String email;
     private String phoneNumber;

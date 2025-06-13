@@ -1,8 +1,12 @@
 package lt.javau12.RestaurantInventoryManager.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class UnitDTO {
 
     private Long unitId;
+
+    @NotBlank(message = "Unit of measure name is required")
     private String name;
 
 

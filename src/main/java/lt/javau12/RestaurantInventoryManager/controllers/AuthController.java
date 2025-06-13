@@ -6,6 +6,7 @@ import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.SignupRequest;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.UserDisplayDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Role;
 import lt.javau12.RestaurantInventoryManager.entities.User;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.PasswordsNotMatchingException;
 import lt.javau12.RestaurantInventoryManager.mappers.UserMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.UserRepository;
 import lt.javau12.RestaurantInventoryManager.security.JwtUtils;
@@ -55,7 +56,7 @@ public class AuthController {
     @PostMapping("/create/employee") // url /auth/create/employee
     public ResponseEntity<UserDisplayDTO> createUser(@RequestBody SignupRequest request){
         if (!request.getFirstPassword().equals(request.getRepeatPassword())){
-            throw new RuntimeException("Password do not match");
+            throw new PasswordsNotMatchingException("Passwords are different, please enter the same password");
         }
         User user = new User(null, request.getUsername(), request.getLastname(), request.getEmail(),
                 request.getUsername(), passwordEncoder.encode(request.getFirstPassword()), request.getRole(), false);
@@ -67,7 +68,7 @@ public class AuthController {
     @PostMapping("/create/manager") // url /auth/create/manager
     public ResponseEntity<String> createManager(@RequestBody SignupRequest request){
         if (!request.getFirstPassword().equals(request.getRepeatPassword())){
-            throw new RuntimeException("Password do not match");
+            throw new PasswordsNotMatchingException("Passwords are different, please enter the same password");
         }
         User user = new User(null, request.getUsername(), request.getLastname(), request.getEmail(),
                 request.getUsername(), passwordEncoder.encode(request.getFirstPassword()), Role.MANAGER, false);
@@ -79,7 +80,7 @@ public class AuthController {
     @PostMapping("/create/admin") // url /auth/create/admin
     public ResponseEntity<String> createAdmin(@RequestBody SignupRequest request){
         if (!request.getFirstPassword().equals(request.getRepeatPassword())){
-            throw new RuntimeException("Password do not match");
+            throw new PasswordsNotMatchingException("Passwords are different, please enter the same password");
         }
         User user = new User(null, request.getUsername(), request.getLastname(), request.getEmail(),
                 request.getUsername(), passwordEncoder.encode(request.getFirstPassword()), Role.ADMIN, false);

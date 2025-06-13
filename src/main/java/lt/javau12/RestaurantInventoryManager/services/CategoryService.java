@@ -2,6 +2,7 @@ package lt.javau12.RestaurantInventoryManager.services;
 
 import lt.javau12.RestaurantInventoryManager.dtos.CategoryDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Category;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.CategoryNotFoundException;
 import lt.javau12.RestaurantInventoryManager.mappers.CategoryMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class CategoryService {
     }
 
     public CategoryDTO getCategoryById(Long id){
-        Category category = categoryRepository.findById(id).orElseThrow( () -> new RuntimeException("Category not found with id " + id) );
+        Category category = categoryRepository.findById(id).orElseThrow( () -> new CategoryNotFoundException("Category not found with ID: " + id) );
         return categoryMapper.toDTO(category);
     }
 
@@ -36,7 +37,7 @@ public class CategoryService {
     }
 
     public CategoryDTO update(CategoryDTO updatedDTO, Long id){
-        Category category = categoryRepository.findById(id).orElseThrow( () -> new RuntimeException("Category not found with id " + id) );
+        Category category = categoryRepository.findById(id).orElseThrow( () -> new CategoryNotFoundException("Category not found with ID: " + id) );
         category.setName(updatedDTO.getName());
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.toDTO(updatedCategory);

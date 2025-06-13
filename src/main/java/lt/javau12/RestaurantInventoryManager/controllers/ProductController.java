@@ -1,5 +1,6 @@
 package lt.javau12.RestaurantInventoryManager.controllers;
 
+import jakarta.validation.Valid;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductDisplayDTO;
 import lt.javau12.RestaurantInventoryManager.services.ProductService;
@@ -42,12 +43,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDisplayDTO> create(@RequestBody ProductCreateDTO dto){
+    public ResponseEntity<ProductDisplayDTO> create(@Valid @RequestBody ProductCreateDTO dto){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(productService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDisplayDTO> update(@RequestBody ProductCreateDTO dto, @PathVariable Long id){
+    public ResponseEntity<ProductDisplayDTO> update(@Valid @RequestBody ProductCreateDTO dto, @PathVariable Long id){
         return ResponseEntity.ok(productService.update(dto, id));
     }
 

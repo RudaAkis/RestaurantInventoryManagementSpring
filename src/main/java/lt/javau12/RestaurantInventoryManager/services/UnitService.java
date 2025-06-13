@@ -2,6 +2,7 @@ package lt.javau12.RestaurantInventoryManager.services;
 
 import lt.javau12.RestaurantInventoryManager.dtos.UnitDTO;
 import lt.javau12.RestaurantInventoryManager.entities.Unit;
+import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.UnitNotFoundException;
 import lt.javau12.RestaurantInventoryManager.mappers.UnitMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.UnitRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class UnitService {
     }
 
     public UnitDTO getUnitById(Long id){
-        Unit unit = unitRepository.findById(id).orElseThrow( () -> new RuntimeException("Unit not found with Id" + id) );
+        Unit unit = unitRepository.findById(id).orElseThrow( () -> new UnitNotFoundException("Unit not found with ID: " + id) );
         return unitMapper.toDTO(unit);
     }
 
@@ -36,7 +37,7 @@ public class UnitService {
     }
 
     public UnitDTO update(UnitDTO unitDTO, Long id){
-        Unit unit = unitRepository.findById(id).orElseThrow( () -> new RuntimeException("Unit not found with Id" + id) );
+        Unit unit = unitRepository.findById(id).orElseThrow( () -> new UnitNotFoundException("Unit not found with ID: " + id) );
         unit.setName(unitDTO.getName());
         Unit updatedUnit = unitRepository.save(unit);
         return unitMapper.toDTO(updatedUnit);
