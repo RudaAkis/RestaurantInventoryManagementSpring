@@ -14,6 +14,8 @@ public class ProductCreateDTO {
     @NotBlank(message = "Product Name required")
     private String name;
 
+    private Double startQuantity;
+
     @Positive(message = "Quantity must be greater than 0")
     private Double quantity;
 
@@ -65,6 +67,7 @@ public class ProductCreateDTO {
                             LocalDateTime expiryDate, Long categoryId, Long vendorId,Double price,
                             List<Long> listOfDishId) {
         this.name = name;
+        this.startQuantity = quantity;
         this.quantity = quantity;
         this.unitOfMeasureId = unitOfMeasureId;
         this.expiryDate = expiryDate;
@@ -153,5 +156,13 @@ public class ProductCreateDTO {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getStartQuantity() {
+        return startQuantity;
+    }
+
+    public void setStartQuantity(Double startQuantity) {
+        this.startQuantity = startQuantity;
     }
 }

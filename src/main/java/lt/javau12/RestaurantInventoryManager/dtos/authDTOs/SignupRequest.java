@@ -1,5 +1,7 @@
 package lt.javau12.RestaurantInventoryManager.dtos.authDTOs;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 import lt.javau12.RestaurantInventoryManager.entities.Role;
 
@@ -27,7 +29,7 @@ public class SignupRequest {
     private String firstPassword;
     private String repeatPassword;
 
-    @NotBlank(message = "Role needs to be selected")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public SignupRequest() {

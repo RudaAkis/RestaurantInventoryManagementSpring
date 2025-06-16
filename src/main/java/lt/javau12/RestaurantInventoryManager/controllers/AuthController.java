@@ -1,5 +1,6 @@
 package lt.javau12.RestaurantInventoryManager.controllers;
 
+import jakarta.validation.Valid;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.LoginRequest;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.LoginResponse;
 import lt.javau12.RestaurantInventoryManager.dtos.authDTOs.SignupRequest;
@@ -54,7 +55,7 @@ public class AuthController {
     }
 
     @PostMapping("/create/employee") // url /auth/create/employee
-    public ResponseEntity<UserDisplayDTO> createUser(@RequestBody SignupRequest request){
+    public ResponseEntity<UserDisplayDTO> createUser(@Valid @RequestBody SignupRequest request){
         if (!request.getFirstPassword().equals(request.getRepeatPassword())){
             throw new PasswordsNotMatchingException("Passwords are different, please enter the same password");
         }
@@ -90,12 +91,12 @@ public class AuthController {
     }
 
     @PostMapping("/login") // url /auth/login
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDisplayDTO> update(@RequestBody SignupRequest signupRequest, @PathVariable Long id){
+    public ResponseEntity<UserDisplayDTO> update(@Valid @RequestBody SignupRequest signupRequest, @PathVariable Long id){
         return ResponseEntity.ok(authService.updateUser(signupRequest, id));
     }
 

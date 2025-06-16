@@ -7,6 +7,7 @@ public class ProductDisplayDTO {
 
     private Long productId;
     private String name;
+    private Double startQuantity;
     private Double quantity;
     private String unitOfMeasure;
     private LocalDateTime expiryDate;
@@ -19,11 +20,12 @@ public class ProductDisplayDTO {
     public ProductDisplayDTO() {
     }
 
-    public ProductDisplayDTO(Long productId, String name, Double quantity,
+    public ProductDisplayDTO(Long productId, String name, Double startQuantity, Double quantity,
                              String unitOfMeasure, LocalDateTime expiryDate,
                              String category, String vendor, Double price, LocalDateTime dateAdded) {
         this.productId = productId;
         this.name = name;
+        this.startQuantity = startQuantity;
         this.quantity = quantity;
         this.unitOfMeasure = unitOfMeasure;
         this.expiryDate = expiryDate;
@@ -103,5 +105,23 @@ public class ProductDisplayDTO {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getStartQuantity() {
+        return startQuantity;
+    }
+
+    public List<BasicDishDTO> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<BasicDishDTO> dishes) {
+        this.dishes = dishes;
+    }
+
+    public void setStartQuantity(Double startQuantity) {
+        this.startQuantity = startQuantity;
+
+
     }
 }

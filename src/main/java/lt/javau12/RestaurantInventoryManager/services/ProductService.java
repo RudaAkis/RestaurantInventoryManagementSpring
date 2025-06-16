@@ -60,6 +60,7 @@ public class ProductService {
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("No category with Id " + dto.getCategoryId()));
         Product product = productMapper.toEntity(dto, unit, category, vendor);
+        product.setStartQuantity(product.getQuantity());
         product.setDateAdded(LocalDateTime.now());
         Product createdProduct = productRepository.save(product);
         return productMapper.toDisplayDTO(createdProduct);

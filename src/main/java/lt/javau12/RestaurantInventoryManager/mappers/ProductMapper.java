@@ -16,6 +16,7 @@ public class ProductMapper {
     public Product toEntity(ProductCreateDTO dto, Unit unit, Category category, Vendor vendor){
         return new Product(
                 dto.getName(),
+                dto.getStartQuantity(),
                 dto.getQuantity(),
                 unit,
                 dto.getExpiryDate(),
@@ -32,6 +33,7 @@ public class ProductMapper {
         return new ProductDisplayDTO(
                 entity.getProductId(),
                 entity.getName(),
+                entity.getStartQuantity(),
                 entity.getQuantity(),
                 entity.getUnitOfMeasure().getName(),
                 entity.getExpiryDate(),

@@ -14,7 +14,8 @@ public class Product {
     private Long productId;
 
     private String name;
-    private Double quantity;
+    private Double startQuantity;
+    private Double quantity;//current quantity
 
     @ManyToOne// One side Many To One Relationship where product knows the unit of measure but units doesnt really care
     private Unit unitOfMeasure;
@@ -39,10 +40,11 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, Double quantity, Unit unitOfMeasure,
+    public Product(String name, Double startQuantity, Double quantity, Unit unitOfMeasure,
                    LocalDateTime expiryDate, Category category,
                    Vendor vendor, Double price, LocalDateTime dateAdded, List<DishProduct> dishes) {
         this.name = name;
+        this.startQuantity = startQuantity;
         this.quantity = quantity;
         this.unitOfMeasure = unitOfMeasure;
         this.expiryDate = expiryDate;
@@ -53,10 +55,11 @@ public class Product {
         this.dishes = dishes;
     }
 
-    public Product(String name, Double quantity, Unit unitOfMeasure,
+    public Product(String name, Double startQuantity,  Double quantity, Unit unitOfMeasure,
                    LocalDateTime expiryDate, Category category,
                    Vendor vendor, Double price, LocalDateTime dateAdded) {
         this.name = name;
+        this.startQuantity = startQuantity;
         this.quantity = quantity;
         this.unitOfMeasure = unitOfMeasure;
         this.expiryDate = expiryDate;
@@ -144,5 +147,13 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getStartQuantity() {
+        return startQuantity;
+    }
+
+    public void setStartQuantity(Double startQuantity) {
+        this.startQuantity = startQuantity;
     }
 }
