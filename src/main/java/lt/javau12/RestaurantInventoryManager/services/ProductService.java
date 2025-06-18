@@ -1,9 +1,8 @@
 package lt.javau12.RestaurantInventoryManager.services;
 
-import jakarta.validation.Valid;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductDisplayDTO;
-import lt.javau12.RestaurantInventoryManager.dtos.RefillQuantity;
+import lt.javau12.RestaurantInventoryManager.dtos.RefillDTO;
 import lt.javau12.RestaurantInventoryManager.entities.*;
 import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.CategoryNotFoundException;
 import lt.javau12.RestaurantInventoryManager.exceptionHandling.exceptions.ProductNotFoundException;
@@ -13,13 +12,7 @@ import lt.javau12.RestaurantInventoryManager.mappers.ProductMapper;
 import lt.javau12.RestaurantInventoryManager.repositories.*;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -133,11 +126,12 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductDisplayDTO refillProduct(Long id, RefillQuantity refillQuantity){
+    public ProductDisplayDTO refillProduct(Long id, RefillDTO refillDTO){
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("No product with ID: " + id));
-        product.setStartQuantity(product.getStartQuantity() + refillQuantity.getRefillQuantity());
-        product.setQuantity(product.getQuantity() + refillQuantity.getRefillQuantity());
+        product.setStartQuantity(product.getStartQuantity() + refillDTO.getRefillQuantity());
+        product.setQuantity(product.getQuantity() + refillDTO.getRefillQuantity());
+        product.setExpiryDate(refillDTO.getUpdatedExpiryDate());
         Product refilledProduct = productRepository.save(product);
         return productMapper.toDisplayDTO(refilledProduct);
     }

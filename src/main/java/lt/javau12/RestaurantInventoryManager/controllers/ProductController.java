@@ -3,7 +3,7 @@ package lt.javau12.RestaurantInventoryManager.controllers;
 import jakarta.validation.Valid;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.ProductDisplayDTO;
-import lt.javau12.RestaurantInventoryManager.dtos.RefillQuantity;
+import lt.javau12.RestaurantInventoryManager.dtos.RefillDTO;
 import lt.javau12.RestaurantInventoryManager.services.ProductService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -61,8 +61,8 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/refill")
-    public ResponseEntity<ProductDisplayDTO> refillProduct(@PathVariable Long id, @Valid @RequestBody RefillQuantity refillQuantity){
-        return ResponseEntity.ok(productService.refillProduct(id, refillQuantity));
+    public ResponseEntity<ProductDisplayDTO> refillProduct(@PathVariable Long id, @Valid @RequestBody RefillDTO refillDTO){
+        return ResponseEntity.ok(productService.refillProduct(id, refillDTO));
     }
 
 
