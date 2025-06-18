@@ -1,5 +1,6 @@
 package lt.javau12.RestaurantInventoryManager.controllers;
 
+import jakarta.validation.Valid;
 import lt.javau12.RestaurantInventoryManager.dtos.CategoryDTO;
 import lt.javau12.RestaurantInventoryManager.services.CategoryService;
 import org.apache.coyote.Response;
@@ -31,12 +32,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> create(@RequestBody CategoryDTO dto){
+    public ResponseEntity<CategoryDTO> create(@Valid @RequestBody CategoryDTO dto){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(categoryService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO dto, @PathVariable Long id){
+    public ResponseEntity<CategoryDTO> update(@Valid @RequestBody CategoryDTO dto, @PathVariable Long id){
         return ResponseEntity.ok(categoryService.update(dto, id));
     }
 

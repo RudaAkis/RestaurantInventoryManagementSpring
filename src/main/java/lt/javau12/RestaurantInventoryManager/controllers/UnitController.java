@@ -38,7 +38,7 @@ public class UnitController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UnitDTO> update(@RequestBody UnitDTO unitDTO, @PathVariable Long id){
+    public ResponseEntity<UnitDTO> update(@Valid @RequestBody UnitDTO unitDTO, @PathVariable Long id){
         return ResponseEntity.ok(unitService.update(unitDTO, id));
     }
 

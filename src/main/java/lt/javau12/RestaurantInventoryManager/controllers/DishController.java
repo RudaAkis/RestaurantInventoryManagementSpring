@@ -1,5 +1,6 @@
 package lt.javau12.RestaurantInventoryManager.controllers;
 
+import jakarta.validation.Valid;
 import lt.javau12.RestaurantInventoryManager.dtos.DishCreateDTO;
 import lt.javau12.RestaurantInventoryManager.dtos.DishDisplayDTO;
 import lt.javau12.RestaurantInventoryManager.services.DishService;
@@ -32,12 +33,12 @@ public class DishController {
     }
 
     @PostMapping
-    public ResponseEntity<DishDisplayDTO> create(@RequestBody DishCreateDTO dto){
+    public ResponseEntity<DishDisplayDTO> create(@Valid @RequestBody DishCreateDTO dto){
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(dishService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DishDisplayDTO> udpate(@RequestBody DishCreateDTO dto, @PathVariable Long id){
+    public ResponseEntity<DishDisplayDTO> udpate( @Valid @RequestBody DishCreateDTO dto, @PathVariable Long id){
         return ResponseEntity.ok(dishService.update(dto, id));
     }
 
