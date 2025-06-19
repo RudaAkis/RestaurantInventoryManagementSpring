@@ -13,6 +13,7 @@ public class OpenAPIConfiguration {
 
     @Bean
     public OpenAPI customizeOpenAPI() {
+        //Configuration for the Swagger integration to support authorization
         final String securitySchemeName = "bearerAuth";
 
         return new OpenAPI()

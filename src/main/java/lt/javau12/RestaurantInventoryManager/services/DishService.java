@@ -64,23 +64,27 @@ public class DishService {
         Dish existing = dishRepository.findById(id)
                 .orElseThrow(() -> new DishNotFoundException("Dish not found with id: " + id));
 
-        existing.getProducts().clear();//removess all preivous products that were attached to dish in the join table
-//        dishRepository.save(existing);
-        dishProductRepository.deleteByDishDishId(id);
+        existing.getProducts().clear();//Clear products from the dish
+        dishProductRepository.deleteByDishDishId(id);//removess all preivous products that were attached to dish in the join table
 
         existing.setName(dto.getName());
         List<DishProduct> dishProducts = new ArrayList<>();
+        //Loop through all products received in the creation DTO
         for(DishProductDTO p : dto.getProducts()){
             DishProduct dishProduct = new DishProduct();
+            //set the existing dish that is being updated
             dishProduct.setDish(existing);
+            //find the product by id from creation DTO or throw exception
             Product product = productRepository.findById(p.getProductId())
                     .orElseThrow(() -> new ProductNotFoundException("Prodcut was not found with ID: "+ p.getProductId()));
-            dishProduct.setProduct(product);
-            dishProduct.setQuantity(p.getQuantity());
+            dishProduct.setProduct(product);//Set that as a product to the existing dish
+            dishProduct.setQuantity(p.getQuantity());//set the quantity from the creation DTO
 
-            dishProducts.add(dishProduct);
+            dishProducts.add(dishProduct);//add to the new list of dish product the dish will contain
         }
+        //Add the new list of products to the dish
         existing.getProducts().addAll(dishProducts);
+        //Save the updated list of products and name to DB
         Dish saved = dishRepository.save(existing);
         return dishMapper.toDisplayDTO(saved);
     }
@@ -95,20 +99,26 @@ public class DishService {
 
     @Transactional //This is used to save all dishes to the repository in one query
     public void makeDish(Long dishId, Long dishCount){
+        //Find the dish or throw exception
         Dish dish = dishRepository.findById(dishId).orElseThrow(() -> new DishNotFoundException("The dish was not found with id " + dishId));
 
+        //Loop through the products associated with the dish
         for (DishProduct dp : dish.getProducts()){
             Product product = dp.getProduct();
+            //Get the total quantity of product currently available
             Double productQuantityInInventory = product.getQuantity();
+            //Get the quantity of product needed for one dish
             Double quantityOfProductInDish = dp.getQuantity();
+            //Get total quantity needed to make all selected dishes
             Double totalQuantityForAllDishes = quantityOfProductInDish * dishCount;
 
+            //If not enough product in inventory throw exception
             if (productQuantityInInventory < totalQuantityForAllDishes){
                 throw new NotEnoughProductException("Not enough " + product.getName() +
                         " to make " + dishCount + " " + dish.getName() +
                         ". Select a different number of dishes to make and try again");
             }
-
+            //Remove the quantity needed to make all dishes from the product
             product.setQuantity(productQuantityInInventory - totalQuantityForAllDishes);
             productRepository.save(product);
         }

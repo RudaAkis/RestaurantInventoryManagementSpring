@@ -15,8 +15,9 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExeptionHandler{
 
-    @ExceptionHandler(BaseException.class)
+    @ExceptionHandler(BaseException.class)//Used for all subclasses that extends the base exception
     public ResponseEntity<ErrorResponse> handleBaseException(BaseException ex) {
+        //Create a new response entity to pass to frontend with current time, HttpStatus code and the error message
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 ex.getStatus().value(),
@@ -27,6 +28,7 @@ public class GlobalExeptionHandler{
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex) {
+        //Create a new hash map that will store fieldName as key and the error message as value
         Map<String, String> errors = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors().forEach(error ->

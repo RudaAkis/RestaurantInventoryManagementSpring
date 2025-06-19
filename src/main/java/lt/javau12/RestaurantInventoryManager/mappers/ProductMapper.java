@@ -10,9 +10,6 @@ import java.util.List;
 @Component
 public class ProductMapper {
 
-//    String name, Double quantity, Long unitOfMeasureId,
-//    LocalDateTime expiryDate, Long categoryId, Long vendorId,
-//    LocalDateTime dateAdded, List<Long> listOfDishId)
     public Product toEntity(ProductCreateDTO dto, Unit unit, Category category, Vendor vendor){
         return new Product(
                 dto.getName(),
@@ -26,9 +23,7 @@ public class ProductMapper {
                 dto.getDateAdded()
         );
     }
-//    String name, Double quantity,
-//    String unitOfMeasure, LocalDateTime expiryDate,
-//    String category, String vendor, LocalDateTime dateAdded
+
     public ProductDisplayDTO toDisplayDTO(Product entity){
         return new ProductDisplayDTO(
                 entity.getProductId(),
